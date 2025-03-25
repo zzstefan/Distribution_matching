@@ -1,1 +1,1 @@
-# distribution_matching
+# Distribution matching for harmonizing structural brain connectivity 
