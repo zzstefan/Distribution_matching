@@ -21,3 +21,25 @@ Multi-site diffusion-weighted magnetic resonance imaging (dMRI) studies offer en
 
 ### Setup
 1. Clone this repository:
+
+## Usage
+
+### Data Preparation
+The code is designed to work with connectivity matrices generated from dMRI data. For data preprocessing:
+1. Process raw dMRI data using FreeSurfer and FSL
+2. Generate structural connectivity matrices
+3. Apply logarithmic transformation for robust statistical analysis
+
+### Running the Distribution Matching
+```matlab
+% Example MATLAB code to run distribution matching
+% See main_harmonization.m for complete implementation
+
+% Load connectivity data
+% ...
+
+% Apply distribution matching harmonization
+[harmonized_data] = distribution_matching(data_new_site, data_reference_site);
+
+% Evaluate results
+% ...
