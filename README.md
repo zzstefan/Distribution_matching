@@ -1,1 +1,45 @@
-# Distribution matching for harmonizing structural brain connectivity 
+# Distribution Matching for Brain Connectivity Harmonization
+
+## Overview
+This repository contains the implementation of a distribution-matching approach to harmonizing structural brain connectivity across different sites and scanners. The method aims to align the statistical properties of connectivity data from different datasets, improving the reliability and comparability of structural connectivity studies that combine data from multiple sources.
+
+## Background
+Multi-site diffusion-weighted magnetic resonance imaging (dMRI) studies offer enhanced statistical power for investigating brain structure, but face challenges due to variations in scanner hardware and acquisition protocols. This distribution-matching technique addresses the harmonization of structural brain connectivity data by aligning the statistical properties of connectivity from different datasets.
+
+## Features
+- Gamma distribution modeling of structural connectivity values
+- Distribution matching to align data from different scanners/sites
+- Comparison with ComBat harmonization method
+- Evaluation through correlation analysis with clinical scores (MMSE) and demographic variables (age)
+
+## Installation
+
+### Prerequisites
+- MATLAB (tested with R2020b and later)
+- FreeSurfer (for processing anatomical MR images)
+- FSL (FMRIB Software Library)
+
+### Setup
+1. Clone this repository:
+
+## Usage
+
+### Data Preparation
+The code is designed to work with connectivity matrices generated from dMRI data. For data preprocessing:
+1. Process raw dMRI data using FreeSurfer and FSL
+2. Generate structural connectivity matrices
+3. Apply logarithmic transformation for robust statistical analysis
+
+### Running the Distribution Matching
+```matlab
+% Example MATLAB code to run distribution matching
+% See run_experiment_preventAD.m for complete implementation
+
+% Load connectivity data
+% ...
+
+% Apply distribution matching harmonization
+[harmonized_data] = distribution_matching(data_new_site, data_reference_site);
+
+% Evaluate results
+% ...
