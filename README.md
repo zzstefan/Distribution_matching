@@ -33,7 +33,7 @@ The code is designed to work with connectivity matrices generated from dMRI data
 ### Running the Distribution Matching
 ```matlab
 % Example MATLAB code to run distribution matching
-% See main_harmonization.m for complete implementation
+% See run_experiment_preventAD.m for complete implementation
 
 % Load connectivity data
 % ...
