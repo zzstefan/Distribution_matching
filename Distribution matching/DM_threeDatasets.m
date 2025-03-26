@@ -1,7 +1,4 @@
 % Script to combine and harmonize ADNI2, OASIS-3, and PREVENT-AD datasets
-clc;
-clear all;
-
 % Load ADNI and OASIS data
 dataTable = readtable('../DM_OASISADNI/base_OASISADNI.csv', VariableNamingRule='preserve');
 Sc_ADNIOASIS = read_sc(dataTable, 'C');
