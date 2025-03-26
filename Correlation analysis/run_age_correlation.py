@@ -10,7 +10,7 @@ import scipy.io as sio
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import wilcoxon
-from covbat_revise3 import apply_covbat
+from covbat import apply_covbat
 import os
 
 # Load the datasets
