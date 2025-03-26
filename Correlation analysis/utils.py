@@ -5,7 +5,7 @@ import pandas as pd
 import scipy
 import neuroHarmonize as nh
 from scipy.stats import gamma
-from covbat_fixed import covbat as covbat_fixed
+#from covbat_fixed import covbat as covbat_fixed
 
 
 def read_sc(dataframe, C_measure):
