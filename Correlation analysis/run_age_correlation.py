@@ -630,8 +630,3 @@ with open(f'./Results_revision/abs_corr_values.pkl', 'wb') as f:
     pickle.dump(abs_corr_results, f)
 
 print("\nAnalysis complete! Results saved to ./Results_revision/ directory.")
-
-
-
-
-#correlation_results, summary = correlate_connectivity_with_age(conn_mat, dm_har_fea, combat_har_fea, covbat_har_fea, data)

@@ -184,15 +184,3 @@ for c in ['C', 'aC']:
         p = p*3570
         print("{:.0e}".format(np.nanmin(p)))
         print((p < 0.05).sum())
-
-
-#### cross check if there is correlation between sex, age and MMSE 
-new_data['Sex'] = (new_data['Sex'] == 'M').astype(int)
-r, p = scipy.stats.pearsonr(new_data['Sex'].values, new_data['Age'].values)
-print(r,p)
-
-MMSE_index = new_data.loc[~new_data.MMSE.isna()].index
-r, p = scipy.stats.pearsonr(new_data.loc[MMSE_index, 'Age'].values, new_data.loc[MMSE_index, 'MMSE'].values)
-print(r,p)
-r,p = scipy.stats.pearsonr(new_data.loc[MMSE_index, 'Sex'].values, new_data.loc[MMSE_index, 'MMSE'].values)
-print(r,p)
