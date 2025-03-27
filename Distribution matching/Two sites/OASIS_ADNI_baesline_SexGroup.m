@@ -1,7 +1,6 @@
 % In this script, we combine ADNI2 and OASIS-3 dataset with only baseline
 % subjects, healthy subjects in OASIS3, healthy,EMCI,SMC subjects in ADNI2;
-clc;
-clear all;
+
 
 dataTable = readtable('base_OASISADNI.csv', VariableNamingRule='preserve');
 

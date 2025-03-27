@@ -5,8 +5,7 @@
 % 3. Sex-specific grouping, OASIS reference
 % 4. Sex-specific grouping, PREVENT-AD reference
 
-clc;
-clear all;
+
 
 % Create directory for results
 main_output_dir = './harmonization_results';
