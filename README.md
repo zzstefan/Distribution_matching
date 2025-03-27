@@ -69,3 +69,9 @@ If you use this code in your research, please cite our paper:
 ```
 Zhou, Z., Fischl, B., & Aganj, I. (2024). Harmonization of Structural Brain Connectivity through Distribution Matching. bioRxiv.
 ```
+
+## Contact
+
+For questions, issues, or collaboration opportunities, please contact:
+- Zhen Zhou (zzhou22@mgh.harvard.edu)
+- Iman Aganj (iaganj@mgh.harvard.edu)
