@@ -70,6 +70,10 @@ If you use this code in your research, please cite our paper:
 Zhou, Z., Fischl, B., & Aganj, I. (2024). Harmonization of Structural Brain Connectivity through Distribution Matching. bioRxiv.
 ```
 
+## Acknowledgments
+
+This research was supported by the Michael J. Fox Foundation for Parkinson's Research (MRI Biomarkers Program award MJFF-021226) and the National Institutes of Health (NIH), specifically in part by the National Institute on Aging (RF1AG068261, R01AG068261, R21AG082082, R01AG064027, R01AG008122, R01AG016495, R01AG070988) and other grants detailed in our paper.
+
 ## Contact
 
 For questions, issues, or collaboration opportunities, please contact:
