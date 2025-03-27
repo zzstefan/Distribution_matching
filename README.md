@@ -32,18 +32,18 @@ The code is designed to work with connectivity matrices generated from dMRI data
 
 ### Running the Distribution Matching
 
-1. Two-Site Harmonization (OASIS-3 and ADNI-2)
-    In the `/Distribution matching/Two sites/` folder, experiments focus on harmonizing data from ADNI-2 to match OASIS-3 (reference site). This includes:
+#### Two-Site Harmonization (OASIS-3 and ADNI-2)
+In the `/Distribution matching/Two sites/` folder, experiments focus on harmonizing data from ADNI-2 to match OASIS-3 (reference site). This includes:
 
-   - Standard implementation (combining all subjects)
-   - Sex-separated implementation (performing harmonization separately for males and females)
+- Standard implementation (combining all subjects)
+- Sex-separated implementation (performing harmonization separately for males and females)
 
-2. Three-Site Harmonization (OASIS-3, ADNI-2 and PREVENT-AD)
-    In the `Distribution matching/Three sites/` folder, experiments include multiple reference sites:
+#### Three-Site Harmonization (OASIS-3, ADNI-2 and PREVENT-AD)
+In the `/Distribution matching/Three sites/` folder, experiments include multiple reference sites:
 
-    - Using OASIS-3 as the reference site
-    - Using PreventAD as the reference site
-    - Both with standard and sex-separated implementations
+- Using OASIS-3 as the reference site
+- Using PreventAD as the reference site
+- Both with standard and sex-separated implementations
 
 
 ### Correlation analysis
