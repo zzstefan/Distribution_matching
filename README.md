@@ -7,14 +7,14 @@ This repository contains the implementation of a distribution-matching approach 
 Multi-site diffusion-weighted magnetic resonance imaging (dMRI) studies offer enhanced statistical power for investigating brain structure, but face challenges due to variations in scanner hardware and acquisition protocols. This distribution-matching technique addresses the harmonization of structural brain connectivity data by aligning the statistical properties of connectivity from different datasets.
 
 ## Features
-- Gamma distribution modeling of structural connectivity values
+- Gamma+delta distribution modeling of structural connectivity values
 - Distribution matching to align data from different scanners/sites
-- Comparison with ComBat/Covbat harmonization method
+- Comparison with ComBat/CovBat harmonization method
 - Evaluation through correlation analysis with clinical scores (MMSE) and demographic variables (age)
 
 ## Installation
 
-### Prerequisites
+### Optional Prerequisites
 - ComBat (https://github.com/rpomponio/neuroHarmonize)
 - CSAODF (Diffusion MRI Orientation Distribution Function in Constant Solid Angel and Hough-Transform Tractography, https://www.nitrc.org/projects/csaodf-hough)
 
@@ -25,8 +25,8 @@ Multi-site diffusion-weighted magnetic resonance imaging (dMRI) studies offer en
 
 ### Data Preparation
 The code is designed to work with connectivity matrices generated from dMRI data. For data preprocessing:
-1. Process raw dMRI data using FreeSurfer and FSL
-2. Generate structural connectivity matrices using CSAODF package
+1. Process raw dMRI data, e.g. using FreeSurfer and FSL
+2. Generate structural connectivity matrices, e.g. using CSAODF package
 
 ### Running the Distribution Matching
 
@@ -67,12 +67,12 @@ The method was validated using:
 ## Citation
 If you use this code in your research, please cite our paper:
 ```
-Zhou, Z., Fischl, B., & Aganj, I. (2024). Harmonization of Structural Brain Connectivity through Distribution Matching. bioRxiv.
+Zhou, Z., Fischl, B., & Aganj, I. (2024). Harmonization of Structural Brain Connectivity through Distribution Matching. bioRxiv 2024.09.05.611489.
 ```
 
 ## Acknowledgments
 
-This research was supported by the Michael J. Fox Foundation for Parkinson's Research (MRI Biomarkers Program award MJFF-021226) and the National Institutes of Health (NIH), specifically in part by the National Institute on Aging (RF1AG068261, R01AG068261, R21AG082082, R01AG064027, R01AG008122, R01AG016495, R01AG070988) and other grants detailed in our paper.
+This research was supported by the Michael J. Fox Foundation for Parkinson's Research (MRI Biomarkers Program award MJFF-021226) and the National Institutes of Health (NIH), specifically in part by the National Institute on Aging (RF1AG068261, R01AG068261) and other grants detailed in our paper.
 
 ## Contact
 
