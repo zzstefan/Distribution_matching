@@ -18,6 +18,7 @@ Multi-site diffusion-weighted magnetic resonance imaging (dMRI) studies offer en
 - MATLAB (tested with R2020b and later)
 - FreeSurfer (for processing anatomical MR images)
 - FSL (FMRIB Software Library)
+- CSAODF (Diffusion MRI Orientation Distribution Function in Constant Solid Angel and Hough-Transform Tractography)
 
 ### Setup
 1. Clone this repository:
