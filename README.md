@@ -28,8 +28,7 @@ Multi-site diffusion-weighted magnetic resonance imaging (dMRI) studies offer en
 ### Data Preparation
 The code is designed to work with connectivity matrices generated from dMRI data. For data preprocessing:
 1. Process raw dMRI data using FreeSurfer and FSL
-2. Generate structural connectivity matrices
-3. Apply logarithmic transformation for robust statistical analysis
+2. Generate structural connectivity matrices using CSAODF package
 
 ### Running the Distribution Matching
 ```matlab
@@ -44,3 +43,16 @@ The code is designed to work with connectivity matrices generated from dMRI data
 
 % Evaluate results
 % ...
+
+Two-Site Harmonization
+In the /Two sites/ folder, experiments focus on harmonizing data from ADNI-2 to match OASIS-3 (reference site). This includes:
+
+Standard implementation (combining all subjects)
+Sex-separated implementation (performing harmonization separately for males and females)
+
+Three-Site Harmonization
+In the /Three sites/ folder, experiments include multiple reference sites:
+
+Using OASIS-3 as the reference site
+Using PreventAD as the reference site
+Both with standard and sex-separated implementations
