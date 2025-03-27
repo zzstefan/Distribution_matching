@@ -44,20 +44,32 @@ In the `/Distribution matching/Three sites/` folder, experiments include multipl
 - Both with standard and sex-separated implementations
 
 ### Correlation analysis
+Our method incorporates comprehensive correlation analysis to evaluate harmonization quality:
+
+* **MMSE Score Correlation**
+  * Measures correlation between Mini-Mental State Examination scores and structural connectivity
+  * Evaluates preservation of clinically relevant connectivity patterns
+  * Compares correlation strength before and after harmonization
+  * Identifies connections with significant changes after harmonization
+
+* **Age Correlation**
+  * Analyzes correlation between age and structural connectivity
+  * Preserves known age-related connectivity patterns
+  * Provides a validation metric for biological variability preservation
+  * Ensures that life-span related trends are not lost during harmonization
 
 ## Datasets
 
 The method was validated using:
 
-- **OASIS-3** (Open Access Series of Imaging Studies): A longitudinal neuroimaging, clinical, and cognitive dataset for normal aging and Alzheimer's disease
-- **ADNI-2** (Alzheimer's Disease Neuroimaging Initiative): Contains data from cognitive normal, mild cognitive impairment, and Alzheimer's disease subjects
-- **PreventAD**: A dataset focused on preclinical Alzheimer's disease
+- **OASIS-3** (Open Access Series of Imaging Studies)
+- **ADNI-2** (Alzheimer's Disease Neuroimaging Initiative)
+- **PREVENT-AD** (PResymptomatic EValuation of Experimental or Novel Treatments for AD)
 
 *Note: The datasets are not included in this repository due to their size and licensing restrictions. They can be obtained from their respective official sources.*
 
 ## Citation
 If you use this code in your research, please cite our paper:
 ```
-Zhou, Z., Fischl, B., & Aganj, I. (2024). Harmonization of Structural Brain Connectivity through
-Distribution Matching. [Journal information to be added upon publication]
+Zhou, Z., Fischl, B., & Aganj, I. (2024). Harmonization of Structural Brain Connectivity through Distribution Matching. bioRxiv.
 ```
