@@ -46,13 +46,13 @@ In the `/Distribution matching/Three sites/` folder, experiments include multipl
 ### Correlation analysis
 Our method incorporates comprehensive correlation analysis to evaluate harmonization quality:
 
-* **MMSE Score Correlation**
+**** MMSE Score Correlation**
 In the `/Correlation analysis/` folder, `run_MMSE_correlation.py`
-  * Measures correlation between MMSE and structural connectivity before and after harmonization
+  - Measures correlation between MMSE and structural connectivity before and after harmonization
 
-* **Age Correlation**
+**** Age Correlation**
 In the `/Correlation analysis/` folder, `run_age_correlation.py`
-  * Analyzes correlation between age and structural connectivity before and after harmonization
+  - Analyzes correlation between age and structural connectivity before and after harmonization
 
 ## Datasets
 
