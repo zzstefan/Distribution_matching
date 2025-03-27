@@ -15,7 +15,7 @@ Multi-site diffusion-weighted magnetic resonance imaging (dMRI) studies offer en
 ## Installation
 
 ### Prerequisites
-- Combat (https://github.com/rpomponio/neuroHarmonize)
+- ComBat (https://github.com/rpomponio/neuroHarmonize)
 - CSAODF (Diffusion MRI Orientation Distribution Function in Constant Solid Angel and Hough-Transform Tractography, https://www.nitrc.org/projects/csaodf-hough)
 
 ### Setup
@@ -40,14 +40,22 @@ In the `/Distribution matching/Two sites/` folder, experiments focus on harmoniz
 In the `/Distribution matching/Three sites/` folder, experiments include multiple reference sites:
 
 - Using OASIS-3 as the reference site
-- Using PreventAD as the reference site
+- Using PREVENT-AD as the reference site
 - Both with standard and sex-separated implementations
-
 
 ### Correlation analysis
 
+## Datasets
 
-### Citation
+The method was validated using:
+
+- **OASIS-3** (Open Access Series of Imaging Studies): A longitudinal neuroimaging, clinical, and cognitive dataset for normal aging and Alzheimer's disease
+- **ADNI-2** (Alzheimer's Disease Neuroimaging Initiative): Contains data from cognitive normal, mild cognitive impairment, and Alzheimer's disease subjects
+- **PreventAD**: A dataset focused on preclinical Alzheimer's disease
+
+*Note: The datasets are not included in this repository due to their size and licensing restrictions. They can be obtained from their respective official sources.*
+
+## Citation
 If you use this code in your research, please cite our paper:
 ```
 Zhou, Z., Fischl, B., & Aganj, I. (2024). Harmonization of Structural Brain Connectivity through
