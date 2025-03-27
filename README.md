@@ -47,16 +47,10 @@ In the `/Distribution matching/Three sites/` folder, experiments include multipl
 Our method incorporates comprehensive correlation analysis to evaluate harmonization quality:
 
 * **MMSE Score Correlation**
-  * Measures correlation between Mini-Mental State Examination scores and structural connectivity
-  * Evaluates preservation of clinically relevant connectivity patterns
-  * Compares correlation strength before and after harmonization
-  * Identifies connections with significant changes after harmonization
+  * Measures correlation between MMSE and structural connectivity before and after harmonization
 
 * **Age Correlation**
-  * Analyzes correlation between age and structural connectivity
-  * Preserves known age-related connectivity patterns
-  * Provides a validation metric for biological variability preservation
-  * Ensures that life-span related trends are not lost during harmonization
+  * Analyzes correlation between age and structural connectivity before and after harmonization
 
 ## Datasets
 
