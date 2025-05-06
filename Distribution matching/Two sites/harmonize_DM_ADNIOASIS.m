@@ -12,7 +12,15 @@ function [harmonized_fea] = harmonize_DM_ADNIOASIS(sc, data, params, weight)
             fea = sc(index, i);
 
             % Gamma CDF
-            p = gamcdf(fea, params(i, j+1, 1), params(i, j+1, 2)); % MATLAB uses scale as the second parameter
+            p = zeros(size(fea));
+            zero_values = (fea == 0);
+            positive_values = (fea > 0);
+        
+            p(zero_values) = 0*weight(i,j+1);
+
+
+            % For positive values, CDF = lambda + (1-lambda)*G(c)
+            p(positive_values) = weight(i,j+1) + (1-weight(i,j+1)) * gamcdf(fea(positive_values), params(i, j+1, 1), params(i, j+1, 2));
 
             % Inverse transformation
             p_inv = zeros(size(fea));

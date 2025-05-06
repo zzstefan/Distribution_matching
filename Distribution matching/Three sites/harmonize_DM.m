@@ -30,7 +30,19 @@ function [harmonized_fea] = harmonize_DM(sc, site_labels, params, weight, refere
             end
             
             % Gamma CDF
-            p = gamcdf(fea, params(i, site_param_idx, 1), params(i, site_param_idx, 2));
+            p = zeros(size(fea));
+            zero_values = (fea == 0);
+            positive_values = (fea > 0);
+
+            lambda_site = weight(i, site_param_idx);
+
+            % For zero values, CDF = 0 (since u(0) = 0)
+            p(zero_values) = 0*lambda_site;
+            
+            % For positive values, CDF = lambda + (1-lambda)*G(c)
+            
+            p(positive_values) = lambda_site + (1-lambda_site) * ...
+                gamcdf(fea(positive_values), params(i, site_param_idx, 1), params(i, site_param_idx, 2));
             
             % Inverse transformation
             p_inv = zeros(size(fea));
