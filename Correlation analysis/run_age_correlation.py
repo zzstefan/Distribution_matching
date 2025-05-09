@@ -10,7 +10,7 @@ import scipy.io as sio
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import wilcoxon
-from covbat import apply_covbat
+from covbat_revise3 import apply_covbat
 import os
 
 # Load the datasets
@@ -53,7 +53,6 @@ def read_sc(data_df, matrix_type, preventad_matrix=None):
     return matrices
 
 
-
 # Create paths for distribution matching results based on your folder structure
 def create_dm_paths(data_df, base_dir, ref_site, include_gender=False):
     """Create paths for distribution matching results with your folder structure"""
@@ -79,8 +78,6 @@ def create_dm_paths(data_df, base_dir, ref_site, include_gender=False):
     return paths
 
 
-
-
 # Dictionary to store all results
 results = {}
 
@@ -101,21 +98,13 @@ age = data['Age'].values
 sex = data['Sex'].values
 
 # Apply Combat harmonization methods
-# 1. Combat with age
-model, combat_age_C = harmonize(sc2, data, 0)
-com_C = recon_full(combat_age_C, data, nonZero_col)
-
-# 2. Combat without age
+# Combat without age
 model, combat_noAge_C = harmonize_noAge(sc2, data)
 com_noAge_C = recon_full(combat_noAge_C, data, nonZero_col)
 
-# 3. Combat without age or sex
+# Combat without age or sex
 model, combat_noAge_noSex_C = harmonize_noAge_noSex(sc2, data)
 com_noAge_noSex_C = recon_full(combat_noAge_noSex_C, data, nonZero_col)
-
-# Same process for adjusted connectivity (aC)
-# Combat harmonization with age as input on aC
-model, com_aC = harmonize(np.log(aC+1), data, 0)
 
 # Combat harmonization without age as input on aC
 model, com_noAge_aC = harmonize_noAge(np.log(aC+1), data)
@@ -125,9 +114,6 @@ model, com_noAge_noSex_aC = harmonize_noAge_noSex(np.log(aC+1), data)
 
 # Apply CovBat harmonization methods
 # For C matrices
-cov_C_tmp = apply_covbat(sc2, batch, age, sex)
-cov_C = recon_full(cov_C_tmp, data, nonZero_col)
-
 cov_noAge_C_tmp = apply_covbat(sc2, batch, sex=sex)
 cov_noAge_C = recon_full(cov_noAge_C_tmp, data, nonZero_col)
 
@@ -135,24 +121,19 @@ cov_noAge_noSex_C_tmp = apply_covbat(sc2, batch)
 cov_noAge_noSex_C = recon_full(cov_noAge_noSex_C_tmp, data, nonZero_col)
 
 # For aC matrices
-cov_aC = apply_covbat(np.log(aC+1), batch, age, sex)
 cov_noAge_aC = apply_covbat(np.log(aC+1), batch, sex=sex)
 cov_noAge_noSex_aC = apply_covbat(np.log(aC+1), batch)
 
 # Create a base SC dictionary with Combat and CovBat results (no reference site specific)
 base_SC = {
     'C': norm_fea(C),
-    'Com_C': norm_fea(np.exp(com_C)-1),
     'Com_noAge_C': norm_fea(np.exp(com_noAge_C)-1),
     'Com_noAge_noSex_C': norm_fea(np.exp(com_noAge_noSex_C)-1),
-    'Cov_C': norm_fea(np.exp(cov_C)-1),
     'Cov_noAge_C': norm_fea(np.exp(cov_noAge_C)-1),
     'Cov_noAge_noSex_C': norm_fea(np.exp(cov_noAge_noSex_C)-1),
     'aC': norm_fea(aC),
-    'Com_aC': norm_fea(np.exp(com_aC)-1),
     'Com_noAge_aC': norm_fea(np.exp(com_noAge_aC)-1),
     'Com_noAge_noSex_aC': norm_fea(np.exp(com_noAge_noSex_aC)-1),
-    'Cov_aC': norm_fea(np.exp(cov_aC)-1),
     'Cov_noAge_aC': norm_fea(np.exp(cov_noAge_aC)-1),
     'Cov_noAge_noSex_aC': norm_fea(np.exp(cov_noAge_noSex_aC)-1)
 }
@@ -172,43 +153,6 @@ for j, c in enumerate(list(base_SC.keys())):
 
 # Apply Bonferroni correction
 base_p = base_p * 3570
-
-# Calculate and print statistics for base harmonization methods
-R = np.abs(base_r)
-mean_r = np.nanmean(R, axis=0)
-std_r = np.nanstd(R, axis=0)
-
-print("\n=== Age Correlation Results for Base Harmonization Methods ===")
-print("Format: Mean (Std) of absolute correlations")
-for i, key in enumerate(base_SC.keys()):
-    print(f"{key}: {mean_r[i]:.2f} ({std_r[i]:.2f})")
-
-# Wilcoxon tests comparing original vs harmonized
-print("\n=== Wilcoxon Signed-Rank Tests for Base Harmonization Methods ===")
-print("Comparing absolute correlations (|r|) between feature sets")
-
-# Compare each harmonized version to original
-base_indices = [0, 7]  # Indices for 'C' and 'aC'
-for base_idx in base_indices:
-    base_name = list(base_SC.keys())[base_idx]
-    print(f"\nBase: {base_name}")
-    for j in range(len(base_SC)):
-        if j != base_idx and (j < 7 if base_idx == 0 else j >= 7):
-            comp_name = list(base_SC.keys())[j]
-            res = wilcoxon(R[:, j], R[:, base_idx], alternative='greater', nan_policy='omit')
-            print(f"{comp_name} vs {base_name}: statistic={res.statistic:.2f}, p-value={res.pvalue:.0e}")
-
-# Count significant correlations
-sig_counts = (base_p < 0.05).sum(axis=0)
-print("\n=== Number of Significant Age Correlations (p < 0.05) for Base Harmonization Methods ===")
-for i, key in enumerate(base_SC.keys()):
-    print(f"{key}: {sig_counts[i]}")
-
-# Minimum p-values
-min_p = np.nanmin(base_p, axis=0)
-print("\n=== Minimum Bonferroni-Corrected p-values for Base Harmonization Methods ===")
-for i, key in enumerate(base_SC.keys()):
-    print(f"{key}: {min_p[i]:.0e}")
 
 
 # Helper function to read DM matrices with proper handling for different datasets
@@ -232,7 +176,6 @@ harmonization_dir = './matlab_code/Prevent_AD/harmonization_results'
 # Define reference sites for harmonization
 reference_sites = ['OASIS','PREVENTAD']
 gender_options = [False,True]  # With or without gender grouping
-
 
 
 for ref_site in reference_sites:
@@ -284,86 +227,6 @@ for ref_site in reference_sites:
             'p': p_dm,
             'SC_keys': list(SC_dm.keys())
         }
-        
-        # Calculate and print statistics for DM methods
-        R_dm = np.abs(r_dm)
-        mean_r_dm = np.nanmean(R_dm, axis=0)
-        std_r_dm = np.nanstd(R_dm, axis=0)
-        
-        print(f"\n=== Age Correlation Results for {exp_id} ===")
-        print("Format: Mean (Std) of absolute correlations")
-        for i, key in enumerate(SC_dm.keys()):
-            print(f"{key}: {mean_r_dm[i]:.2f} ({std_r_dm[i]:.2f})")
-        
-        # Wilcoxon tests comparing original vs harmonized for DM
-        print(f"\n=== Wilcoxon Signed-Rank Tests for {exp_id} ===")
-        print("Comparing absolute correlations (|r|) between feature sets")
-        
-        # Compare DM to original
-        print(f"\nComparing DM to original:")
-        res = wilcoxon(R_dm[:, 1], R_dm[:, 0], alternative='greater', nan_policy='omit')
-        print(f"{list(SC_dm.keys())[1]} vs {list(SC_dm.keys())[0]}: statistic={res.statistic:.2f}, p-value={res.pvalue:.0e}")
-        
-        res = wilcoxon(R_dm[:, 3], R_dm[:, 2], alternative='greater', nan_policy='omit')
-        print(f"{list(SC_dm.keys())[3]} vs {list(SC_dm.keys())[2]}: statistic={res.statistic:.2f}, p-value={res.pvalue:.0e}")
-        
-        # Count significant correlations for DM
-        sig_counts_dm = (p_dm < 0.05).sum(axis=0)
-        print(f"\n=== Number of Significant Age Correlations (p < 0.05) for {exp_id} ===")
-        for i, key in enumerate(SC_dm.keys()):
-            print(f"{key}: {sig_counts_dm[i]}")
-        
-        # Minimum p-values (using nanmin to exclude NaNs)
-        min_p_dm = np.nanmin(p_dm, axis=0)
-        print(f"\n=== Minimum Bonferroni-Corrected p-values for {exp_id} ===")
-        for i, key in enumerate(SC_dm.keys()):
-            if np.isnan(min_p_dm[i]):
-                print(f"{key}: No valid p-values (all NaN)")
-            else:
-                print(f"{key}: {min_p_dm[i]:.0e}")
-
-
-
-# ======= Dataset-specific analyses =======
-# Analyze correlations within each individual dataset (before harmonization)
-#datasets = ['OASIS-3', 'ADNI2', 'PREVENT-AD']  # Updated PREVENT-AD name
-
-datasets = ['OASIS-3','ADNI2','PREVENT-AD']
-print("\n\n===== Within-Dataset Age Correlations (Before Harmonization) =====")
-for dataset in datasets:
-    for c in ['C','aC']:
-        r = np.zeros(aC.shape[1])
-        p = np.zeros(aC.shape[1])
-        
-        age_index = data.loc[(~data.Age.isna()) & (data['SITE']==dataset)].index
-        age_values = data.loc[age_index, 'Age'].values
-        fea = norm_fea(C if c == 'C' else aC)[age_index, :]
-
-        #fea = (C if c == 'C' else aC)[age_index, :]
-        
-        for i in range(fea.shape[1]):
-            r[i], p[i] = scipy.stats.pearsonr(age_values, fea[:, i])
-        
-        # Replace NaNs if needed
-        if np.isnan(p).any():
-            print(f"Warning: Found {np.isnan(p).sum()} NaN p-values in {dataset} {c}. Replacing with 1.0")
-            p = np.nan_to_num(p, nan=1.0)
-        
-        if np.isnan(r).any():
-            print(f"Warning: Found {np.isnan(r).sum()} NaN r-values in {dataset} {c}. Replacing with 0.0")
-            r = np.nan_to_num(r, nan=0.0)
-        
-        R = np.abs(r)
-        mean_r = np.nanmean(R, axis=0)
-        std_r = np.nanstd(R, axis=0)
-        
-        p_corrected = p * 3570  # Bonferroni correction
-        
-        print(f"\n{c} with {dataset} in age")
-        print(f"Mean |r|: {mean_r:.2f} (±{std_r:.2f})")
-        print(f"Min p-value: {np.nanmin(p_corrected):.0e}")
-        print(f"Significant connections: {(p_corrected < 0.05).sum()}")
-
 
 
 def print_table_format_results(data, C_type, base_SC, results, datasets):
@@ -410,7 +273,7 @@ def print_table_format_results(data, C_type, base_SC, results, datasets):
     
     # Second section: Combined dataset with no harmonization
     print("\n----- COMBINED DATASET - NO HARMONIZATION -----")
-    idx = 0 if C_type == 'C' else 7  # Index for C or aC in base_SC
+    idx = 0 if C_type == 'C' else 5  # Index for C or aC in base_SC
     key = list(base_SC.keys())[idx]
     
     r_data = base_r[:, idx]
@@ -473,8 +336,8 @@ def print_table_format_results(data, C_type, base_SC, results, datasets):
     
     # Fourth section: ComBat
     print("\n----- COMBAT -----")
-    combat_indices = [1, 2, 3] if C_type == 'C' else [8, 9, 10]
-    combat_labels = ["w/ age, w/ sex", "w/o age, w/ sex", "w/o age, w/o sex"]
+    combat_indices = [1, 2] if C_type == 'C' else [6, 7]
+    combat_labels = ["w/o age, w/ sex", "w/o age, w/o sex"]
     
     for i, (idx, label) in enumerate(zip(combat_indices, combat_labels)):
         r_data = base_r[:, idx]
@@ -492,7 +355,7 @@ def print_table_format_results(data, C_type, base_SC, results, datasets):
         min_p = np.nanmin(p_data)
         
         # Get Wilcoxon test results
-        base_idx = 0 if C_type == 'C' else 7
+        base_idx = 0 if C_type == 'C' else 5
         res = wilcoxon(np.abs(base_r[:, idx]), 
                      np.abs(base_r[:, base_idx]), 
                      alternative='greater', nan_policy='omit')
@@ -506,8 +369,8 @@ def print_table_format_results(data, C_type, base_SC, results, datasets):
     
     # Fifth section: CovBat
     print("\n----- COVBAT -----")
-    covbat_indices = [4, 5, 6] if C_type == 'C' else [11, 12, 13]
-    covbat_labels = ["w/ age, w/ sex", "w/o age, w/ sex", "w/o age, w/o sex"]
+    covbat_indices = [3, 4] if C_type == 'C' else [8, 9]
+    covbat_labels = ["w/o age, w/ sex", "w/o age, w/o sex"]
     
     for i, (idx, label) in enumerate(zip(covbat_indices, covbat_labels)):
         r_data = base_r[:, idx]
@@ -525,7 +388,7 @@ def print_table_format_results(data, C_type, base_SC, results, datasets):
         min_p = np.nanmin(p_data)
         
         # Get Wilcoxon test results
-        base_idx = 0 if C_type == 'C' else 7
+        base_idx = 0 if C_type == 'C' else 5
         res = wilcoxon(np.abs(base_r[:, idx]), 
                      np.abs(base_r[:, base_idx]), 
                      alternative='greater', nan_policy='omit')
@@ -538,9 +401,6 @@ def print_table_format_results(data, C_type, base_SC, results, datasets):
         print(f"  min p: {min_p:.0e}")
 
 
-
-
-
 # Add this after all calculations but before saving results
 datasets = ['OASIS-3', 'ADNI2', 'PREVENT-AD']
 
@@ -549,8 +409,6 @@ print_table_format_results(data, 'C', base_SC, results, datasets)
 
 # Print table format for aC (adjusted connectivity)
 print_table_format_results(data, 'aC', base_SC, results, datasets)
-
-
 
 
 # Save results to file
@@ -616,17 +474,3 @@ for exp_id in results:
 
 summary_df = pd.DataFrame(summary_rows)
 summary_df.to_csv('./Results_revision/age_correlation_summary.csv', index=False)
-
-# Also save the absolute correlation values for potential visualization
-abs_corr_results = {}
-# Save base harmonization absolute correlations
-abs_corr_results['base_harmonization'] = R_base
-
-# Save DM absolute correlations
-for exp_id in results:
-    abs_corr_results[exp_id] = np.abs(results[exp_id]['r'])
-
-with open(f'./Results_revision/abs_corr_values.pkl', 'wb') as f:
-    pickle.dump(abs_corr_results, f)
-
-print("\nAnalysis complete! Results saved to ./Results_revision/ directory.")
