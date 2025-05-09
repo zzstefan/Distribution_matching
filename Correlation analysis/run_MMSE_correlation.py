@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 #import patsy
 from scipy.stats import wilcoxon
-from covbat import apply_covbat
+from covbat_revise3 import apply_covbat
 
 
 #new_data = pd.read_pickle('./data/ADNI_OASIS.pkl')
@@ -62,13 +62,6 @@ sc= np.delete(C, zero_col, axis=1)
 sc2 = np.log(sc+1)
 
 
-# Combat harmonization with age as input, on log space
-model, combat_age_C = harmonize(sc2, new_data, 0)
-com_C = recon_full(combat_age_C, new_data, nonZero_col)
-
-
-
-
 # Combat harmonization without age as input, on log space
 model, combat_noAge_C = harmonize_noAge(sc2, new_data)
 com_noAge_C = recon_full(combat_noAge_C, new_data, nonZero_col)
@@ -79,10 +72,6 @@ com_noAge_C = recon_full(combat_noAge_C, new_data, nonZero_col)
 # Combat harmonization without age or sex as input, on log space
 model, combat_noAge_noSex_C = harmonize_noAge_noSex(sc2, new_data)
 com_noAge_noSex_C = recon_full(combat_noAge_noSex_C, new_data, nonZero_col)
-np.save('./Result_Figure_revision/com_C.npy', com_C)
-
-# Combat harmonization with age as input on aC, on log space
-model, com_aC = harmonize(np.log(aC+1), new_data, 0)
 
 # Combat harmonization without age as input on aC, on log space
 model, com_noAge_aC = harmonize_noAge(np.log(aC+1), new_data)
@@ -93,38 +82,29 @@ model, com_noAge_noSex_aC = harmonize_noAge_noSex(np.log(aC+1), new_data)
 
 # for covbat, DM_C:
 batch = new_data['SITE']
-age = new_data['Age'].values
 sex = new_data['Sex'].values
-#model = pd.DataFrame({'Age': age})
-
-
-cov_C_tmp = apply_covbat(sc2, batch, age, sex)
-cov_C = recon_full(cov_C_tmp, new_data, nonZero_col)
-
 
 cov_noAge_C_tmp = apply_covbat(sc2, batch, sex=sex)
 cov_noAge_C = recon_full(cov_noAge_C_tmp, new_data, nonZero_col)
 
 cov_noAge_noSex_C_tmp = apply_covbat(sc2, batch)
 cov_noAge_noSex_C = recon_full(cov_noAge_noSex_C_tmp, new_data, nonZero_col)
-np.save('./Result_Figure_revision/cov_C.npy', cov_C)
 
 
-cov_aC = apply_covbat(np.log(aC+1),batch,age,sex)
 cov_noAge_aC = apply_covbat(np.log(aC+1),batch,sex=sex)
 cov_noAge_noSex_aC = apply_covbat(np.log(aC+1), batch)
 
 
 
-SC = {'C': norm_fea(C), 'DM_C': norm_fea(DM_C), 'DM_C_SG': norm_fea(DM_C_SG),'Com_C': norm_fea(np.exp(com_C)-1), 
+SC = {'C': norm_fea(C), 'DM_C': norm_fea(DM_C), 'DM_C_SG': norm_fea(DM_C_SG), 
       'Com_noAge_C': norm_fea(np.exp(com_noAge_C)-1), 
       'Com_noAge_noSex_C': norm_fea(np.exp(com_noAge_noSex_C)-1),
-      'Cov_C': norm_fea(np.exp(cov_C)-1), 'Cov_noAge_C': norm_fea(np.exp(cov_noAge_C)-1),
+      'Cov_noAge_C': norm_fea(np.exp(cov_noAge_C)-1),
       'Cov_noAge_noSex_C': norm_fea(np.exp(cov_noAge_noSex_C)-1),
-      'aC': norm_fea(aC), 'DM_aC': norm_fea(DM_aC), 'DM_aC_SG': norm_fea(DM_aC_SG),'Com_aC':norm_fea(np.exp(com_aC)-1), 
+      'aC': norm_fea(aC), 'DM_aC': norm_fea(DM_aC), 'DM_aC_SG': norm_fea(DM_aC_SG), 
       'Com_noAge_aC': norm_fea(np.exp(com_noAge_aC)-1),
       'Com_noAge_noSex_aC': norm_fea(np.exp(com_noAge_noSex_aC)-1),
-      'Cov_aC': norm_fea(np.exp(cov_aC)-1), 'Cov_noAge_aC': norm_fea(np.exp(cov_noAge_aC)-1),
+      'Cov_noAge_aC': norm_fea(np.exp(cov_noAge_aC)-1),
       'Cov_noAge_noSex_aC': norm_fea(np.exp(cov_noAge_noSex_aC)-1)}
 
 
@@ -155,15 +135,15 @@ std_r = np.nanstd(R, axis=0)
 print("\n=== Mean and Std of Absolute Correlations (|r|) ===")
 print("Format: Mean (Std)")
 for i, key in enumerate(SC.keys()):
-    print(f"{key}: {mean_r[i]:.3f} ({std_r[i]:.3f})")
+    print(f"{key}: {mean_r[i]:.2f} ({std_r[i]:.2f})")
 
 #2. Wilcoxon tests with scientific notation p-values
 print("\n=== Wilcoxon Signed-Rank Tests (Greater Alternative) ===")
 print("Comparing absolute correlations (|r|) between feature sets")
-for i in [0, 9]:  # Indices for 'C' and 'aC'
+for i in [0, 7]:  # Indices for 'C' and 'aC'
     base_name = list(SC.keys())[i]
     print(f"\nBase: {base_name}")
-    for j in range(i + 1, i + 9):  # Compare to next 8 features
+    for j in range(i + 1, i + 7):  # Compare to next 6 features
         comp_name = list(SC.keys())[j]
         res = wilcoxon(R[:, j], R[:, i], alternative='greater', nan_policy='omit')
         print(f"{comp_name} vs {base_name}: statistic={res.statistic:.2f}, p-value={res.pvalue:.0e}")
@@ -186,8 +166,8 @@ for col, pval in min_p.items():
 # np.save('/autofs/space/genesis_001/users/Projects/PPMI/code/Result_Figure/ab_r_OASISADNI.npy', R)
 
 # from scipy.stats import wilcoxon
-# for i in [0,9]:
-#     for j in range(i+1,i+9):
+# for i in [0,7]:
+#     for j in range(i+1,i+7):
 #         res = wilcoxon(R[:,j], R[:,i], alternative='greater',nan_policy='omit')
 #         print(res)
 
@@ -220,8 +200,8 @@ for c in ['C', 'aC']:
         R = np.abs(r)
         mean_r= np.nanmean(R, axis=0)
         std_r = np.nanstd(R, axis=0)
-        round_mean = "{:.3f}".format(mean_r)
-        round_std = "{:.3f}".format(std_r)
+        round_mean = "{:.2f}".format(mean_r)
+        round_std = "{:.2f}".format(std_r)
         print('%s with %s in MMSE'%(c, dataset))
         print( f'{round_mean} ({round_std})') 
 
@@ -251,8 +231,8 @@ for c in ['C', 'aC']:
         R = np.abs(r)
         mean_r= np.nanmean(R, axis=0)
         std_r = np.nanstd(R, axis=0)
-        round_mean = "{:.3f}".format(mean_r)
-        round_std = "{:.3f}".format(std_r)
+        round_mean = "{:.2f}".format(mean_r)
+        round_std = "{:.2f}".format(std_r)
         print('%s with %s in age'%(c, dataset))
         print( f'{round_mean} ({round_std})') 
 
