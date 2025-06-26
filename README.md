@@ -72,7 +72,7 @@ Zhou Z, Fischl B, Aganj I, Alzheimer's Disease Neuroimaging Initiative. Harmoniz
 
 ## Acknowledgments
 
-This research was supported by the Michael J. Fox Foundation for Parkinson's Research (MRI Biomarkers Program award MJFF-021226) and the National Institutes of Health (NIH), specifically in part by the National Institute on Aging (RF1AG068261, R01AG068261) and other grants detailed in our paper.
+This work was supported by Michael J. Fox Foundation for Parkinson‘s Research, MJFF- 021226. Additional funding was provided by the National Institute on Aging, RF1AG068261, R01AG068261, R01AG008122, R01AG016495, R01AG064027, R01AG070988, R21AG082082 National Institute of Biomedical Imaging and Bioengineering, P41EB030006, R01EB006758, R01EB019956, R01EB023281, R21EB018907 the Brain Initiative Brain Connects consortium, U01NS132181, UM1NS132358 National Institute of Neurological Disorders and Stroke, R01NS0525851, R01NS070963, R01NS083534, R01NS105820, R21NS072652, U01NS086625, U24NS10059103 National Institute of Mental Health, U01MH117023, R01MH121885, R01MH123195, RF1MH123195, NIH Blueprint for Neuroscience Research, U01MH093765.
 
 ## Contact
 
