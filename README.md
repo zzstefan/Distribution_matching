@@ -67,7 +67,7 @@ The method was validated using:
 ## Citation
 If you use this code in your research, please cite our paper:
 ```
-Zhou, Z., Fischl, B., & Aganj, I. (2024). Harmonization of Structural Brain Connectivity through Distribution Matching. bioRxiv 2024.09.05.611489.
+Zhou Z, Fischl B, Aganj I, Alzheimer's Disease Neuroimaging Initiative. Harmonization of Structural Brain Connectivity Through Distribution Matching. Hum Brain Mapp. 2025 Jun 15; 46(9):e70257. PMID: 40545448
 ```
 
 ## Acknowledgments
